@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CustomizeFeatures from './FeaturesComponents/CustomizeFeatures';
 
 // Normalizes string as a slug - a string that is safe to use
 // in both URLs and html attributes
@@ -14,6 +15,8 @@ const USCurrencyFormat = new Intl.NumberFormat('en-US', {
 });
 
 class App extends Component {
+  //  state keeps track of selected options from imported list of available features
+  
   state = {
     selected: {
       Processor: {
@@ -35,6 +38,7 @@ class App extends Component {
     }
   };
 
+  //  changes the selected feature in state to the user selected option
   updateFeature = (feature, newValue) => {
     const selected = Object.assign({}, this.state.selected);
     selected[feature] = newValue;
@@ -44,41 +48,55 @@ class App extends Component {
   };
 
   render() {
+    //    LIST OF AVAILABLE FEATURES & OPTIONS FOR EACH FEATURE
+    //    BREAK UP INTO SEPARATE LIST COMPS. BY FEATURE
+    //  create an array of keys from imported features object
+    //  map through array of keys, and for each key...
     const features = Object.keys(this.props.features).map((feature, idx) => {
+      
       const featureHash = feature + '-' + idx;
-      const options = this.props.features[feature].map(item => {
-        const itemHash = slugify(JSON.stringify(item));
-        return (
-          <div key={itemHash} className="feature__item">
-            <input
-              type="radio"
-              id={itemHash}
-              className="feature__option"
-              name={slugify(feature)}
-              checked={item.name === this.state.selected[feature].name}
-              onChange={e => this.updateFeature(feature, item)}
-            />
-            <label htmlFor={itemHash} className="feature__label">
-              {item.name} ({USCurrencyFormat.format(item.cost)})
-            </label>
-          </div>
-        );
-      });
-
+      //  create an array of options for a selected feature by accessing FEATURES[feature]
+      //  map through option objects, and for each option, 
+      // const options = this.props.features[feature].map(item => {
+      //   const itemHash = slugify(JSON.stringify(item));
+      //   //  return a div item
+      //   return (
+      //     <div key={itemHash} className="feature__item">
+      //       <input
+      //         type="radio"
+      //         id={itemHash}
+      //         className="feature__option"
+      //         name={slugify(feature)}
+      //         //  set it's value to checked based on if it's name matches the name selected in state
+      //         checked={item.name === this.state.selected[feature].name}
+      //         //  when a button is selected, update state to reflect the new selected option
+      //         onChange={e => this.updateFeature(feature, item)}
+      //       />
+      //       <label htmlFor={itemHash} className="feature__label">
+      //         {/* display item name and price to user */}
+      //         {item.name} ({USCurrencyFormat.format(item.cost)})
+      //       </label>
+      //     </div>
+      //   );
+      // });
+      //  ... create a field for a feature and its available options
       return (
         <fieldset className="feature" key={featureHash}>
           <legend className="feature__name">
             <h3>{feature}</h3>
           </legend>
-          {options}
+          {/* {options} */}
         </fieldset>
       );
     });
 
+    //    CART - CHANGE TO CART COMPONENT
+    //  create an array of keys from selected options in state, and for each key:feature
     const summary = Object.keys(this.state.selected).map((feature, idx) => {
       const featureHash = feature + '-' + idx;
+      //  set the selected option equal to the name & price values in the feature object
       const selectedOption = this.state.selected[feature];
-
+      //  return a div for each selected option (creating a list of selected options i.e. cart)
       return (
         <div className="summary__option" key={featureHash}>
           <div className="summary__option__label">{feature} </div>
@@ -95,6 +113,8 @@ class App extends Component {
       0
     );
 
+      //    RETURN FOR RENDER CALL
+      //    KEEP AS APP COMPONENT CALLING CHILD COMPS.
     return (
       <div className="App">
         <header>
@@ -103,10 +123,13 @@ class App extends Component {
         <main>
           <form className="main__form">
             <h2>Customize your laptop</h2>
+            {/* CHANGE THIS TO CustomizeFeatures COMP.  */}
+            <CustomizeFeatures updateFeature={this.updateFeature}selected={this.state.selected} features={this.props.features}/>
             {features}
           </form>
           <section className="main__summary">
             <h2>Your cart</h2>
+            {/* CHANGE THIS TO Cart COMP. */}
             {summary}
             <div className="summary__total">
               <div className="summary__total__label">Total</div>
