@@ -3,25 +3,22 @@ import USCurrencyFormat from '../utils/Currency';
 
 
 function Options(props) {
-  // console.log(props.option.name)
-  // console.log(props.selected[props.feature].name)
   return (
-    <>
+    <div className='feature__item'>
       <input
         type="radio"
-        id={props.option.name}
+        id={props.itemHash}
         className="feature__option"
-        name={props.option.name}
         //  set it's value to checked based on if it's name matches the name selected in state
         checked={props.option.name === props.selected[props.feature].name}
         //  when a button is selected, update state to reflect the new selected option
-        onChange={() => props.updateFeature(props.feature, props.option)}
+        onChange={(e) => props.updateFeature(props.feature, props.option)}
       />
-      <label className="feature__label">
+      <label htmlFor={props.itemHash} className="feature__label">
         {props.option.name} ({USCurrencyFormat.format(props.option.cost)})
       </label>
-    </>
-  )
+    </div>
+  );
 }
 
 export default Options

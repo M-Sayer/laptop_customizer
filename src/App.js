@@ -1,16 +1,14 @@
 import React from 'react';
-import initialState from './initialState';
-import Header from './Header';
-import FeaturesList from './Features/FeaturesList';
-
-
-// Normalizes string as a slug - a string that is safe to use
-// in both URLs and html attributes
-// import slugify from 'slugify';
 import './App.css';
 
+import { FEATURES, SELECTED } from './initialState';
+
+import Header from './Header';
+import FeaturesList from './Features/FeaturesList';
+import Cart from './Cart/Cart';
+
 class App extends React.Component {
-  state = initialState
+  state = { features: FEATURES, selected: SELECTED};
 
   updateFeature = (feature, newValue) => {
     console.log('does this piece of garbage even work')
@@ -22,17 +20,22 @@ class App extends React.Component {
   };
 
   render() {
-
     return (
-      <div>
+      <div className='App'>
         <Header />
-  
         <main>
-          <FeaturesList state={this.state} updateFeature={this.updateFeature}/>
+          <FeaturesList 
+            features={this.state.features}
+            selected={this.state.selected} 
+            updateFeature={this.updateFeature}
+            />
+          <section className='main__summary'>
+            <Cart selected={this.state.selected} />
+          </section>  
         </main>
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;
