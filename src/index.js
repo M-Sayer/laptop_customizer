@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import ScrewThis from './ScrewThis'
+
 
 const FEATURES = {
   Processor: [
@@ -44,6 +46,8 @@ const FEATURES = {
       cost: 1400
     },
   ]
-};
+}
 
-ReactDOM.render(<App features={FEATURES}/>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
+
+// ReactDOM.render(<ScrewThis features={FEATURES} />, document.getElementById('root'));
